@@ -17,6 +17,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->name('logout');
+
+
 require __DIR__.'/auth.php';
 
 
@@ -33,7 +38,7 @@ Route::view('/contact', 'contact')->name('contact'); #route pour page Contact
 
 
 
-Route::view('/platformtechnique', 'platformAvecAcce.platformtechnique')->name('platformtechnique');
+Route::view('/dashboard', 'dashboard')->name('platformtechnique');
 
 Route::view('/Rapport', 'platformAvecAcce.Rapport')->name('Rapport');
 

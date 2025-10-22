@@ -120,9 +120,23 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link " href="{{route('platformtechnique')}}"><i class="fa fa-tachometer-alt"></i> Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{route('calcul')}}"><i class="fa fa-calculator"></i> Calculs</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{route('Rapport')}}"><i class="fa fa-file-alt"></i> Rapports</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="{{route('platformtechnique')}}">
+                            <i class="fa fa-tachometer-alt"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('calcul')}}">
+                            <i class="fa fa-calculator"></i> Calculs
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('Rapport')}}">
+                            <i class="fa fa-file-alt"></i> Rapports
+                        </a>
+                    </li>
+            
+                    <!-- Notifications -->
                     <li class="nav-item dropdown">
                         <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-bell fa-lg"></i> Notification
@@ -164,7 +178,9 @@
                             </div>
                         </ul>
                     </li>
-                   
+                    
+            
+                    <!-- Profil -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                             <i class="fa fa-user"></i> {{ Auth::user()->name }}
@@ -176,7 +192,6 @@
                                     <i class="fa fa-id-badge"></i> Mon profil
                                 </a>
                             </li>
-                    
                             <li><hr class="dropdown-divider"></li>
                     
                             <!-- Déconnexion -->
@@ -188,80 +203,91 @@
                                     </button>
                                 </form>
                             </li>
-                        </ul>
-                    </li>
-                    
                 </ul>
             </div>
+            
         </div>
     </nav>
+    <div class="container my-5">
 
-    <!-- CONTENU PRINCIPAL -->
-    <div class="container">
-        <h1 class="section-title text-center">👋🏻 Bonjour Mrs {{ Auth::user()->name }}</h1>
-        <h2 class="section-title text-center">Bienvenue sur la plateforme technique softlather</h2>
-
-        <div class="row g-4">
-            <!-- Calculs -->
-            <div class="col-md-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">⚙️ Calculs</h5>
-                        <p class="card-text">Page pour effectuer ou consulter vos calculs techniques.</p>
-                        <a href="{{route('calcul')}}" class="btn btn-primary w-100">Aller aux Calculs</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Rapports -->
-            <div class="col-md-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">📊 Rapports</h5>
-                        <p class="card-text">Visualiser, supprimer, lister et chercher vos rapports par date ou nom.</p>
-                        <a href="{{route('Rapport')}}" class="btn btn-success w-100">Voir Rapports</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Historique -->
-            <div class="col-md-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">🕒 Historique</h5>
-                        <p class="card-text">Consulter vos connexions et activités récentes.</p>
-                        <a href="#" class="btn btn-warning w-100">Voir Historique</a>
-                    </div>
-                </div>
+        <!-- Titre et recherche -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="fw-bold">📊 Rapports</h1>
+            <div class="input-group w-50">
+                <input type="text" class="form-control" placeholder="🔍 Rechercher par nom ou date...">
+                <button class="btn btn-primary" type="button">Rechercher</button>
             </div>
         </div>
-
-        <!-- Profil -->
-        <h2 class="section-title">Profil</h2>
-        <div class="card shadow-sm mb-4">
-            <div class="card-body">
-                <p><strong>Nom :</strong> {{ Auth::user()->name }}</p>
-                <p><strong>Prénom :</strong> {{ Auth::user()->name }}</p>
-                <p><strong>Email :</strong> {{ Auth::user()->email }}</p>
-                <p><strong>Téléphone :</strong> +33 6 12 34 56 78</p>
-                <p><strong>Adresse :</strong> 8 rue lebon Paris 75017</p>
-        
-                <a href="{{route('voirprofil')}}" class="btn btn-outline-primary">
-                    <i class="fa fa-eye"></i> Visualiser
-                </a>
-                <a href="{{route('modifierprofil')}}" class="btn btn-outline-primary">
-                    <i class="fa fa-edit"></i> Modifier
-                </a>
-            </div>
+    
+        <!-- Message succès -->
+        <div class="alert alert-success d-flex align-items-center" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            Rapport supprimé avec succès.
         </div>
-
-     
-
-        <!-- Déconnexion -->
-        <div class="text-center">
-            <a href="{{ route('login')}}" class="btn btn-danger btn-lg"><i class="fa fa-sign-out-alt"></i> Déconnexion</a>
+    
+        <!-- Tableau des rapports -->
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light text-uppercase">
+                        <tr>
+                            <th>Titre</th>
+                            <th>Auteur</th>
+                            <th>Date de création</th>
+                            <th>Statut</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Rapport énergétique - Site Montreuil</td>
+                            <td>Islam romareo</td>
+                            <td>13/10/2025 10:22</td>
+                            <td><span class="badge bg-success">Actif</span></td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye"></i> Voir</button>
+                                <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt"></i> Supprimer</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Suivi consommation - Bâtiment A</td>
+                            <td>Alice Martin</td>
+                            <td>12/10/2025 09:05</td>
+                            <td><span class="badge bg-warning text-dark">Archivé</span></td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye"></i> Voir</button>
+                                <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt"></i> Supprimer</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Audit énergétique - Zone industrielle</td>
+                            <td>Karim Benali</td>
+                            <td>10/10/2025 14:45</td>
+                            <td><span class="badge bg-danger">Supprimé</span></td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye"></i> Voir</button>
+                                <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt"></i> Supprimer</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    
+            <!-- Pagination -->
+            <div class="card-footer d-flex justify-content-center">
+                <nav>
+                    <ul class="pagination mb-0">
+                        <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
+    
 
     <!-- FOOTER -->
     <footer>
