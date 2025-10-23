@@ -142,14 +142,14 @@
           <td class="p-2 border">{{ $user->name }} {{ $user->prenom }}</td>
           <td class="p-2 border">{{ $user->email }}</td>
           <td>
-            <form method="POST" action="{{ route('admin.user.confirm', $user->id) }}">
+            <form method="POST" action="{{ route('admin.user.confirm', $user->id) }}" style="display:inline-block;">
               @csrf
-              <button type="submit" class="btn btn-success btn-sm">Confirmer</button>
+              <button type="submit" class="btn btn-success btn-sm" class="btn-action btn-confirm" style="width: 100px; height: 30px;">Confirmer</button>
           </form>
-          <form method="POST" action="{{ route('admin.user.refuse', $user->id) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir refuser cette inscription ? Cette action est irréversible !')">
+          <form method="POST" action="{{ route('admin.user.refuse', $user->id) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir refuser cette inscription ? Cette action est irréversible !')" style="display:inline-block;">
             @csrf
             @method('DELETE')
-            <button type="submit" class="btn btn-danger btn-sm">Refuser</button>
+            <button type="submit" class="btn btn-danger btn-sm" class="btn-action btn-refuse"style="width: 100px; height: 30px;" >Refuser</button>
         </form>
           </td>
         </tr>

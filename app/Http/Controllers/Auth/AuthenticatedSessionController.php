@@ -8,6 +8,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TestMail;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -42,6 +44,8 @@ class AuthenticatedSessionController extends Controller
     
         // Mettre à jour la date de dernière connexion
         $user->update(['last_login_at' => now()]);
+
+        Mail::to($user->email)->send(new TestMail());
     
         // Vérifier le rôle et rediriger
         if ($user->role === 'admin') {

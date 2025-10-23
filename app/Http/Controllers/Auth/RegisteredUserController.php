@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
@@ -45,7 +46,9 @@ class RegisteredUserController extends Controller
         ]);
 
         event(new Registered($user));
-
+ 
+        $adminEmail = 'admin@softlather.com'; // Remplace par ton admin réel
+        Mail::to($adminEmail)->send(new NewUserRegisteredAdmin($user));
        
         return redirect()->route('login')->with('success', 'Votre compte a été créé. Veuillez attendre l’activation par l’administrateur.');
     }
