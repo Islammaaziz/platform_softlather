@@ -263,23 +263,9 @@ footer {
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link " href="{{route('platformtechnique')}}">
-                            <i class="fa fa-tachometer-alt"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('calcul')}}">
-                            <i class="fa fa-calculator"></i> Calculs
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('Rapport')}}">
-                            <i class="fa fa-file-alt"></i> Rapports
-                        </a>
-                    </li>
-            
-                    <!-- Notifications -->
+                    <li class="nav-item"><a class="nav-link " href="{{route('platformtechnique')}}"><i class="fa fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{route('calcul')}}"><i class="fa fa-calculator"></i> Calculs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{route('Rapport')}}"><i class="fa fa-file-alt"></i> Rapports</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-bell fa-lg"></i> Notification
@@ -321,9 +307,7 @@ footer {
                             </div>
                         </ul>
                     </li>
-                    
-            
-                    <!-- Profil -->
+                   
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                             <i class="fa fa-user"></i> {{ Auth::user()->name }}
@@ -331,10 +315,17 @@ footer {
                         <ul class="dropdown-menu dropdown-menu-end">
                             <!-- Lien vers le profil -->
                             <li>
-                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                                    <i class="fa fa-id-badge"></i> Mon profil
+                                <a class="dropdown-item" href="{{ route('voirprofil') }}">
+                                    <i class="fa fa-id-badge"></i>voir profil
                                 </a>
                             </li>
+
+                            <li>
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                    <i class="fa fa-id-badge"></i> Modifier profil
+                                </a>
+                            </li>
+                    
                             <li><hr class="dropdown-divider"></li>
                     
                             <!-- Déconnexion -->
@@ -346,12 +337,13 @@ footer {
                                     </button>
                                 </form>
                             </li>
+                        </ul>
+                    </li>
+                    
                 </ul>
             </div>
-            
         </div>
     </nav>
-
 <div class="container pb-5">
   
   <div>

@@ -97,8 +97,28 @@
     gap: 20px;
     align-items: center;
 }
-
-
+body { background-color: #f8f9fa; }
+    .navbar-brand { font-weight: bold; }
+    .logo-container { display: flex; align-items: center; gap: 12px; }
+    .logo-container img { width: 50px; height: 50px; border-radius: 8px; }
+    .logo-container h1 { font-size: 1.9rem; margin: 0; font-weight: bold; color: #e0dfdf; }
+    .card { transition: transform 0.2s ease; }
+    .card:hover { transform: scale(1.02); }
+    .card-header { background: linear-gradient(90deg, #4e73df 0%, #224abe 100%); color: white; }
+    .avatar { width: 140px; height: 140px; border-radius: 50%; border: 3px solid #4e73df; object-fit: cover; }
+    .list-group-item { font-size: 1rem; display: flex; justify-content: space-between; align-items: center; }
+    .list-group-item i { min-width: 25px; color: #4e73df; margin-right: 8px; }
+    footer { background: #1a1a1a; color: white; text-align: center; padding: 30px 20px; }
+    footer nav a { color: white; margin: 0 10px; font-size: 1rem; transition: color 0.3s ease; }
+    footer nav a:hover { color: #2e4ecc; }
+    footer p { margin-top: 15px; font-size: 0.9rem; }
+    strong {
+    color: #000000;           /* noir */
+    font-weight: bold;         /* gras */
+    font-family: 'Arial', sans-serif;  /* police lisible type titre */
+    font-size: 1.1rem;        /* légèrement plus grand */
+    
+}
 
     
     </style>
@@ -201,88 +221,45 @@
             </div>
         </div>
     </nav>
-    <div class="container my-5">
 
-        <!-- Titre et recherche -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="fw-bold">📊 Rapports</h1>
-            <div class="input-group w-50">
-                <input type="text" class="form-control" placeholder="🔍 Rechercher par nom ou date...">
-                <button class="btn btn-primary" type="button">Rechercher</button>
-            </div>
-        </div>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header text-center p-4">
+                        <h3 class="mb-0">Profil Utilisateur</h3>
+                    </div>
+                    <div class="card-body">
+                        <!-- Avatar -->
+                        <div class="text-center mb-4">
+                            <img src="{{ asset('images/iso.jpg') }}" alt="Avatar Utilisateur" class="avatar">
+                        </div>
     
-        <!-- Message succès -->
-        <div class="alert alert-success d-flex align-items-center" role="alert">
-            <i class="fas fa-check-circle me-2"></i>
-            Rapport supprimé avec succès.
-        </div>
+                        <!-- Infos utilisateur (aligné à gauche) -->
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><i class="fa fa-user"><strong> Nom:</strong></i> {{ $user->name }}</li>
+                            <li class="list-group-item"><i class="fa fa-id-badge"><strong> Prénom:</strong></i> {{ $user->prenom ?? '-' }}</li>
+                            <li class="list-group-item"><i class="fa fa-envelope"><strong> Email:</strong></i> {{ $user->email }}</li>
+                            <li class="list-group-item"><i class="fa fa-phone"><strong> Numéro:</strong></i> {{ $user->telephone ?? '-' }}</li>
+                            <li class="list-group-item"><i class="fa fa-lock"><strong> Mot de passe:</strong></i> ********</li>
+                            <li class="list-group-item"><i class="fa fa-toggle-on"><strong> Statut:</strong></i> {{ $user->is_active ? 'Actif' : 'Inactif' }}</li>
+                            <li class="list-group-item"><i class="fa fa-calendar-alt"><strong> Création:</strong></i> {{ $user->created_at->format('d/m/Y') }}</li>
+                            <li class="list-group-item"><i class="fa fa-clock"><strong> Dernière connexion:</strong></i>   {{ $user->created_at ? $user->created_at->format('d/m/Y') : '-' }}</li>
+                            
+                            
+                        </ul>
     
-        <!-- Tableau des rapports -->
-        <div class="card shadow-sm">
-            <div class="card-body p-0">
-                <table class="table table-hover mb-0">
-                    <thead class="table-light text-uppercase">
-                        <tr>
-                            <th>Titre</th>
-                            <th>Auteur</th>
-                            <th>Date de création</th>
-                            <th>Statut</th>
-                            <th class="text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Rapport énergétique - Site Montreuil</td>
-                            <td>Islam romareo</td>
-                            <td>13/10/2025 10:22</td>
-                            <td><span class="badge bg-success">Actif</span></td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye"></i> Voir</button>
-                                <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt"></i> Supprimer</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Suivi consommation - Bâtiment A</td>
-                            <td>Alice Martin</td>
-                            <td>12/10/2025 09:05</td>
-                            <td><span class="badge bg-warning text-dark">Archivé</span></td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye"></i> Voir</button>
-                                <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt"></i> Supprimer</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Audit énergétique - Zone industrielle</td>
-                            <td>Karim Benali</td>
-                            <td>10/10/2025 14:45</td>
-                            <td><span class="badge bg-danger">Supprimé</span></td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye"></i> Voir</button>
-                                <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt"></i> Supprimer</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-    
-            <!-- Pagination -->
-            <div class="card-footer d-flex justify-content-center">
-                <nav>
-                    <ul class="pagination mb-0">
-                        <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                    </ul>
-                </nav>
+                        <!-- Bouton modifier -->
+                        <div class="text-center mt-4">
+                           <a href="{{route('modifierprofil')}}"> <button class="btn btn-primary btn-lg px-4"><i class="fa fa-edit me-2"></i> Modifier le profil</button></a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    
 
-    <!-- FOOTER -->
+
     <footer>
 
     

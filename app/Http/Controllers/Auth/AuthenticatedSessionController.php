@@ -24,22 +24,34 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        // Authentification
+        // Authentification de base
         $request->authenticate();
         $request->session()->regenerate();
     
-        // Mettre à jour la dernière connexion
         $user = $request->user();
+    
+        // Vérifier si le compte est actif
+        if ($user->statut !== 'active') {
+            // Déconnecter immédiatement
+            auth()->logout();
+    
+            return back()->withErrors([
+                'email' => 'Votre compte n’est pas actif. Veuillez contacter SoftLather pour l’activer.',
+            ])->onlyInput('email');
+        }
+    
+        // Mettre à jour la date de dernière connexion
         $user->update(['last_login_at' => now()]);
     
         // Vérifier le rôle et rediriger
         if ($user->role === 'admin') {
-            return redirect()->route('dashboardadmin'); // route pour admin
+            return redirect()->route('dashboardadmin');
         }
     
-        // Si l'utilisateur n'est pas admin, c'est un user normal
+        // Utilisateur normal
         return redirect()->route('platformtechnique');
     }
+    
     
 
     /**

@@ -46,9 +46,7 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        // ✅ Connexion automatique après inscription
-        Auth::login($user);
-
-        return redirect()->route('dashboard');
+       
+        return redirect()->route('login')->with('success', 'Votre compte a été créé. Veuillez attendre l’activation par l’administrateur.');
     }
 }

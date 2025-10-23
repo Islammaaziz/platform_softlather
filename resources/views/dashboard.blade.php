@@ -172,8 +172,14 @@
                         <ul class="dropdown-menu dropdown-menu-end">
                             <!-- Lien vers le profil -->
                             <li>
+                                <a class="dropdown-item" href="{{ route('voirprofil') }}">
+                                    <i class="fa fa-id-badge"></i> voir profil
+                                </a>
+                            </li>
+
+                            <li>
                                 <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                                    <i class="fa fa-id-badge"></i> Mon profil
+                                 ⚙️  Paramètres
                                 </a>
                             </li>
                     
@@ -259,7 +265,14 @@
 
         <!-- Déconnexion -->
         <div class="text-center">
-            <a href="{{ route('login')}}" class="btn btn-danger btn-lg"><i class="fa fa-sign-out-alt"></i> Déconnexion</a>
+            <a class="btn btn-danger btn-lg">
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="dropdown-item ">
+                    <i class="fa fa-sign-out-alt"></i> Déconnexion
+                </button>
+            </form>
+        </a>
         </div>
     </div>
 

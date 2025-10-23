@@ -95,39 +95,35 @@
   <h1 class="section-title">👋🏻 Bonjour  John</h1>
   <!-- Utilisateurs -->
   <div class="section-card">
-    <h4>Utilisateurs</h4>
+    <h4>Utilisateurs récents</h4>
     <table>
-      <thead>
-        <tr>
-          <th>Nom</th>
-          <th>Email</th>
-          <th>Numero</th>
-          <th>Dernière connexion</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Dupont Jean</td>
-          <td>j.dupont@mail.com</td>
-          <td>0710912356</td>
-          <td>le 12/09/2025 a 12:23</td>
-          
-        </tr>
-        <tr>
-          <td>Martin Alice</td>
-          <td>a.martin@mail.com</td>
-          <td>0712022349</td>
-          <td>le 12/10/2025 a 15:09</td>
-         
-        </tr>
-      </tbody>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Numéro</th>
+                <th>Date d’inscription</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($derniers_utilisateurs as $user)
+                <tr>
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->email }}</td>
+                    <td>{{ $user->telephone ?? '—' }}</td>
+                    <td>{{ $user->created_at->format('d/m/Y à H:i') }}</td>
+                </tr>
+            @endforeach
+        </tbody>
     </table>
+
     <div class="d-flex justify-content-center mt-3">
         <button onclick="window.location.href='{{ route('voirutilisateurs') }}'" class="btn-action btn-edit">
             Visualiser les utilisateurs
-          </button>
+        </button>
     </div>
-  </div>
+</div>
+
 
   <!-- Confirmation des comptes -->
   <div class="section-card">
@@ -141,22 +137,23 @@
         </tr>
       </thead>
       <tbody>
+      @foreach ($utilisateurs_inactifs as $user)
         <tr>
-          <td>Durand Paul</td>
-          <td>p.durand@mail.com</td>
+          <td class="p-2 border">{{ $user->name }} {{ $user->prenom }}</td>
+          <td class="p-2 border">{{ $user->email }}</td>
           <td>
-            <button class="btn-confirm">Confirmer</button>
-            <button class="btn-refuse">Refuser</button>
+            <form method="POST" action="{{ route('admin.user.confirm', $user->id) }}">
+              @csrf
+              <button type="submit" class="btn btn-success btn-sm">Confirmer</button>
+          </form>
+          <form method="POST" action="{{ route('admin.user.refuse', $user->id) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir refuser cette inscription ? Cette action est irréversible !')">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger btn-sm">Refuser</button>
+        </form>
           </td>
         </tr>
-        <tr>
-          <td>Leroy Sophie</td>
-          <td>s.leroy@mail.com</td>
-          <td>
-            <button class="btn-confirm">Confirmer</button>
-            <button class="btn-refuse">Refuser</button>
-          </td>
-        </tr>
+        @endforeach
       </tbody>
     </table>
   </div>

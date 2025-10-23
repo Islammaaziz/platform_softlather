@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -42,9 +45,9 @@ Route::view('/dashboard', 'dashboard')->name('platformtechnique');
 
 Route::view('/Rapport', 'platformAvecAcce.Rapport')->name('Rapport');
 
-Route::view('/voirprofil', 'platformAvecAcce.voirprofil')->name('voirprofil');
 
-Route::view('/modifierprofil', 'platformAvecAcce.modifierprofil')->name('modifierprofil');
+
+Route::get('/profil/modifier', [UserController::class, 'edit'])->name('modifierprofil');
 
 Route::view('/calcul', 'platformAvecAcce.calcul')->name('calcul');
 
@@ -52,9 +55,9 @@ Route::view('/calcul', 'platformAvecAcce.calcul')->name('calcul');
 
 
 
-Route::view('/dashboardadmin', 'admin.dashboard')->name('dashboardadmin');
 
-Route::view('/voirutilisateurs', 'admin.voirutilisateurs')->name('voirutilisateurs');
+
+
 
 Route::view('/voirRapports', 'admin.voirRapports')->name('voirRapports');
 
@@ -64,3 +67,15 @@ Route::view('/modifierutilisateur', 'admin.modifierutilisateur')->name('modifier
 
 
 
+
+
+Route::get('/profil', [UserController::class, 'show'])->name('voirprofil');
+
+Route::put('/profil', [UserController::class, 'update'])->name('profil.update');
+
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('dashboardadmin');
+
+Route::get('/admin/voirutilisateurs', [AdminController::class, 'voirutilisateur'])->name('voirutilisateurs');
+
+Route::post('/admin/user/{user}/confirm', [AdminController::class, 'confirmUser'])->name('admin.user.confirm');
+Route::delete('/admin/user/{user}/refuse', [AdminController::class, 'refuseUser'])->name('admin.user.refuse');

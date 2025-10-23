@@ -100,51 +100,31 @@
       <button class="btn btn-primary"><i class="fa fa-plus"></i> Ajouter un utilisateur</button>
     </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Nom complet</th>
-          <th>Email</th>
-          <th>Rôle</th>
-          <th>Statut</th>
-          <th>Date d’inscription</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Jean Dupont</td>
-          <td>j.dupont@mail.com</td>
-          <td>Utilisateur</td>
-          <td><span class="badge bg-success">Actif</span></td>
-          <td>05/09/2025</td>
-          <td>
-            <button class="btn-action btn-view"><a href="{{route('showutilisateur')}}"><i class="fa fa-eye"></i></a></button>
-
-          </td>
-        </tr>
-        <tr>
-          <td>Alice Martin</td>
-          <td>a.martin@mail.com</td>
-          <td>Utilisateur</td>
-          <td><span class="badge bg-danger">Bloqué</span></td>
-          <td>21/08/2025</td>
-          <td>
-            <button class="btn-action btn-view"><a href="{{route('showutilisateur')}}"><i class="fa fa-eye"></i></a></button>
-          </td>
-        </tr>
-        <tr>
-          <td>Paul Durand</td>
-          <td>p.durand@mail.com</td>
-          <td>Administrateur</td>
-          <td><span class="badge bg-success">Actif</span></td>
-          <td>14/07/2025</td>
-          <td>
-            <button class="btn-action btn-view"><a href="{{route('showutilisateur')}}"><i class="fa fa-eye"></i></a></button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="p-6 sm:p-10 bg-white shadow sm:rounded-lg max-w-6xl mx-auto">
+      <h2 class="text-xl font-bold mb-4">Liste des utilisateurs</h2>
+      <table class="table-auto w-full border-collapse border border-gray-300">
+          <thead>
+              <tr class="bg-gray-200">
+                  <th class="border px-4 py-2">Nom</th>
+                  <th class="border px-4 py-2">Email</th>
+                  <th class="border px-4 py-2">Numéro</th>
+                  <th class="border px-4 py-2">Statut</th>
+                  <th class="border px-4 py-2">Date d'inscription</th>
+              </tr>
+          </thead>
+          <tbody>
+              @foreach($utilisateurs as $user)
+              <tr class="hover:bg-gray-100">
+                  <td class="border px-4 py-2">{{ $user->name }}</td>
+                  <td class="border px-4 py-2">{{ $user->email }}</td>
+                  <td class="border px-4 py-2">{{ $user->telephone ?? '-' }}</td>
+                  <td class="border px-4 py-2">{{ $user->statut ?? '-' }}</td>
+                  <td class="border px-4 py-2">{{ $user->created_at->format('d/m/Y H:i') }}</td>
+              </tr>
+              @endforeach
+          </tbody>
+      </table>
+  </div>
   </div>
 </div>
 
