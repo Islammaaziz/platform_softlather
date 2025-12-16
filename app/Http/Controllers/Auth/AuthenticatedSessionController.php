@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Cookie;
 use App\Mail\TestMail;
 use App\Notifications\ConnexionNotification;
-
 
 class AuthenticatedSessionController extends Controller
 {
@@ -28,39 +28,42 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        // Authentification de base
+        // 🔹 Déconnexion complète de tout utilisateur précédent
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        Cookie::queue(Cookie::forget(Auth::getRecallerName())); // supprime remember me
+
+        // 🔹 Authentification
         $request->authenticate();
-        $request->session()->regenerate();
-    
+        $request->session()->regenerate(); // nouvelle session propre
+
         $user = $request->user();
-    
-        // Vérifier si le compte est actif
+
+        // 🔹 Vérifier si le compte est actif
         if ($user->statut !== 'active') {
-            // Déconnecter immédiatement
-            auth()->logout();
-    
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            Cookie::queue(Cookie::forget(Auth::getRecallerName()));
+
             return back()->withErrors([
                 'email' => 'Votre compte n’est pas actif. Veuillez contacter SoftLather pour l’activer.',
             ])->onlyInput('email');
         }
-    
-        // Mettre à jour la date de dernière connexion
+
+        // 🔹 Mettre à jour la dernière connexion
         $user->update(['last_login_at' => now()]);
 
+        // 🔹 Envoyer mail et notification
         Mail::to($user->email)->send(new TestMail());
-    
-        // Vérifier le rôle et rediriger
-        if ($user->role === 'admin') {
-            return redirect()->route('dashboardadmin');
-        }
-    
-        // Utilisateur normal
-         $user->notify(new ConnexionNotification($user));
-         
-        return redirect()->route('platformtechnique');
+        $user->notify(new ConnexionNotification($user));
+
+        // 🔹 Redirection selon rôle
+        return $user->role === 'admin' 
+            ? redirect()->route('dashboardadmin') 
+            : redirect()->route('platformtechnique');
     }
-    
-    
 
     /**
      * Destroy an authenticated session.
@@ -70,14 +73,17 @@ class AuthenticatedSessionController extends Controller
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
+        Cookie::queue(Cookie::forget(Auth::getRecallerName())); // supprime remember me
 
-        return redirect('/');
+        return redirect('/login');
     }
 
-        protected function authenticated($request, $user)
-{
-    $user->notify(new ConnexionNotification($user));
-}
+    /**
+     * Optional: action après authentification réussie
+     */
+    protected function authenticated($request, $user)
+    {
+        $user->notify(new ConnexionNotification($user));
+    }
 }

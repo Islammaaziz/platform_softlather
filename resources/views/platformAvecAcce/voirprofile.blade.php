@@ -246,7 +246,7 @@ body { background-color: #f8f9fa; }
                             <li class="list-group-item"><i class="fa fa-lock"><strong> Mot de passe:</strong></i> ********</li>
                             <li class="list-group-item"><i class="fa fa-toggle-on"><strong> Statut:</strong></i> {{ $user->statut }}</li>
                             <li class="list-group-item"><i class="fa fa-calendar-alt"><strong> Création:</strong></i> {{ $user->created_at->format('d/m/Y') }}</li>
-                            <li class="list-group-item"><i class="fa fa-clock"><strong> Dernière connexion:</strong></i>   {{ $user->created_at ? $user->created_at->format('d/m/Y') : '-' }}</li>
+                            <li class="list-group-item"><i class="fa fa-clock"><strong> Dernière connexion:</strong></i>   {{ now()->format('d/m/Y ') }}</li>
 
                             
                             

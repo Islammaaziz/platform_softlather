@@ -198,6 +198,7 @@ public function index()
 public function historique()
 {
    $notifications = Auth::user()->notifications()->latest()->get();
+   
 
    
 

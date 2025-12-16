@@ -8,83 +8,86 @@ use App\Models\Rapport;
 
 class UserController extends Controller
 {
+    // Fonction privée pour vérifier l'utilisateur normal
+  private function checkUser()
+{
+    $user = Auth::user();
+
+    if (!$user) {
+        return redirect('/login')->with('error', 'Veuillez vous connecter !')->send();
+    }
+
+    if ($user->role !== 'user') {
+        // Si c'est un admin, on le redirige vers son dashboard
+        return redirect('/admin/dashboard')->with('error', 'Accès interdit à cette page')->send();
+    }
+}
+
     public function show()
     {
-        $user = Auth::user(); // récupère l'utilisateur connecté
+        $this->checkUser();
 
-        if (!$user) {
-            return "Aucun utilisateur connecté."; // simple gestion d'erreur
-        }
-
+        $user = Auth::user(); 
         return view('platformAvecAcce.voirprofile', compact('user'));
     }
 
     public function edit()
     {
-        $user = Auth::user(); // utilisateur connecté
+        $this->checkUser();
+
+        $user = Auth::user(); 
         return view('platformAvecAcce.modifierprofil', compact('user'));
     }
 
-
     public function update(Request $request)
-{
+    {
+        $this->checkUser();
 
-    +
-     $user = Auth::user();
+        $user = Auth::user();
 
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'prenom' => 'nullable|string|max:255',
-        'email' => 'required|email|max:255',
-        'telephone' => 'nullable|string|max:20',
-        'adresse' => 'nullable|string|max:255',
-        'ville' => 'nullable|string|max:255',
-        'code_postal' => 'nullable|string|max:20',
-        'password' => 'nullable|min:8',
-    ]);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'prenom' => 'nullable|string|max:255',
+            'email' => 'required|email|max:255',
+            'telephone' => 'nullable|string|max:20',
+            'adresse' => 'nullable|string|max:255',
+            'ville' => 'nullable|string|max:255',
+            'code_postal' => 'nullable|string|max:20',
+            'password' => 'nullable|min:8',
+        ]);
 
-    $data = $request->only([
-        'name',
-        'prenom',
-        'email',
-        'telephone',
-        'adresse',
-        'ville',
-        'code_postal',
-    ]);
+        $data = $request->only([
+            'name',
+            'prenom',
+            'email',
+            'telephone',
+            'adresse',
+            'ville',
+            'code_postal',
+        ]);
 
-    // 👉 NE CHANGE LE PASSWORD QUE SI IL EST RENSEIGNÉ
-    if ($request->filled('password')) {
-        $data['password'] = bcrypt($request->password);
+        if ($request->filled('password')) {
+            $data['password'] = bcrypt($request->password);
+        }
+
+        $user->update($data);
+
+        return redirect()->route('voirprofil')->with('success', 'Profil mis à jour avec succès.');
     }
 
-    $user->update($data);
+    public function dashboard()
+    {
+       if ($redirect = $this->checkUser()) {
+        return $redirect; // <- très important
+    }
 
-    return redirect()->route('voirprofil')->with('success', 'Profil mis à jour avec succès.');
-}
+        $user = Auth::user();
 
-public function dashboard(){
-
-   $user = Auth::user();
-
-        // Notifications non lues
         $unreadNotifications = $user->unreadNotifications;
-
-        // Toutes les notifications (lues + non lues)
         $allNotifications = $user->notifications;
 
         return view('dashboard', compact('unreadNotifications', 'allNotifications'));
-
-
-}
-
-public function voirRapports(){
-
-
-      $rapports = Rapport::latest()->get();
-
-    return view('admin.voirRapports', compact('rapports'));
+    }
 }
 
 
-}
